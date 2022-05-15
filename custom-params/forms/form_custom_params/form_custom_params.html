@@ -1,0 +1,102 @@
+<html>
+  <head>
+    <link
+      type="text/css"
+      rel="stylesheet"
+      href="/style-guide/css/fluig-style-guide.min.css"
+    />
+    <script
+      type="text/javascript"
+      src="/portal/resources/js/jquery/jquery.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="/portal/resources/js/jquery/jquery-ui.min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="/portal/resources/js/mustache/mustache-min.js"
+    ></script>
+    <script
+      type="text/javascript"
+      src="/style-guide/js/fluig-style-guide.min.js"
+      charset="utf-8"
+    ></script>
+  </head>
+  <body onload="dispatchEvents()">
+    <div class="fluig-style-guide">
+      <form name="form" role="form">
+        <div class="panel panel-primary">
+          <div class="panel-heading">i18n.translate("title")</div>
+          <div class="panel-body">
+            <h3>i18n.translate("header")</h3>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="paramID">i18n.translate("paramID.label")</label>
+                  <span class="required text-danger"><strong>*</strong></span>
+                  <input
+                    type="text"
+                    class="form-control"
+                    name="paramID"
+                    id="paramID"
+                    placeholder=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="paramValue"
+                    >i18n.translate("paramValue.label")</label
+                  >
+                  <span class="required text-danger"><strong>*</strong></span>
+                  <input
+                    type="password"
+                    class="form-control"
+                    name="paramValue"
+                    id="paramValue"
+                    placeholder=""
+                  />
+                </div>
+              </div>
+            </div>
+            <div class="row fs-display-none">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="paramValueIsSensitive">
+                    <input
+                      type="checkbox"
+                      name="paramValueIsSensitive"
+                      id="paramValueIsSensitive"
+                    />
+                    i18n.translate("paramValueIsSensitive.label")
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group">
+                  <label for="paramDescription"
+                    >i18n.translate("paramDescription.label")</label
+                  >
+                  <textarea
+                    type="text"
+                    class="form-control"
+                    name="paramDescription"
+                    id="paramDescription"
+                    placeholder=""
+                    rows="6"
+                  ></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </form>
+    </div>
+    <script src="form_custom_params.js"></script>
+  </body>
+</html>

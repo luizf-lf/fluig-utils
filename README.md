@@ -2,7 +2,7 @@
 
 ## Sobre
 
-Um repositório contendo customizações utilitárias para a plataforma Fluig.
+Um repositório contendo customizações utilitárias e experimentais para a plataforma Fluig.
 
 ## Projetos Disponíveis
 
