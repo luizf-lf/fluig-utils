@@ -1,4 +1,11 @@
 {
-  "cSpell.words": ["FLUIGC", "fshide", "fsshow", "WCMAPI"],
+  "cSpell.words": [
+    "FLUIGC",
+    "fshide",
+    "fsshow",
+    "UPDATEPREFERENCES",
+    "WCMAPI",
+    "webdesk"
+  ],
   "cSpell.language": "en,pt,pt-BR,es-ES"
 }

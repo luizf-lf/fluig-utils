@@ -1,0 +1,22 @@
+application.type=widget
+application.code=custom_params_manager
+application.title=Gestor De Parâmetros
+application.description=Permite uma gestão facilitada do formulário de gestão de parâmetros.
+application.category=Luiz Ferreira
+application.renderer=freemarker
+application.uiwidget=true
+application.mobileapp=true
+application.version=${build.version}-${build.revision}
+
+developer.code=luiz.ferreira
+developer.name=Luiz Ferreira
+developer.url=https://www.luizf-lf.github.io
+
+view.file=view.ftl
+edit.file=edit.ftl
+
+locale.file.base.name=custom_params_manager
+
+application.resource.js.1=/resources/js/custom_params_manager.js
+application.resource.css.2=/resources/css/custom_params_manager.css
+application.icon=icon.png
