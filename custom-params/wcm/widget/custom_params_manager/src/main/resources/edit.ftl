@@ -22,9 +22,11 @@
           name="inputFormId_${instanceId}"
           id="inputFormId_${instanceId}"
           placeholder=""
-          data-check-form-id
+          readonly
         />
-        <p id="inputFormIdHelper_${instanceId}" class="text-danger"></p>
+        <button type="button" class="btn btn-primary fs-md-margin-top" data-select-document>
+          Buscar Formulário No ECM
+        </button>
       </div>
     </div>
     <div class="col-md-6">
@@ -60,6 +62,7 @@
             name="checkRemoveTitle_${instanceId}" 
           /> Remover título da página?
         </label>
+        <br />
         <small>Marque esta opção caso deseje remover o título da página em um layout padrão do Fluig.</small>
       </div>
     </div>
@@ -74,4 +77,3 @@
   </div>
 
 </div>
-<script type="text/javascript" src="/webdesk/vcXMLRPC.js"></script>

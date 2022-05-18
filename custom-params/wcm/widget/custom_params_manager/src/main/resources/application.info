@@ -19,4 +19,5 @@ locale.file.base.name=custom_params_manager
 
 application.resource.js.1=/resources/js/custom_params_manager.js
 application.resource.css.2=/resources/css/custom_params_manager.css
+application.resource.component.3=ecm/searchdocument
 application.icon=icon.png
