@@ -1,9 +1,10 @@
 var custom_params_manager = SuperWidget.extend({
   instanceId: null,
   loaderInstance: null,
+
   formId: null,
   formDataset: null,
-  removesTittle: true,
+  removesTittle: null,
 
   translations: {
     pt_BR: {
@@ -44,11 +45,9 @@ var custom_params_manager = SuperWidget.extend({
   saveSettings: function () {
     var instanceId = this.instanceId;
     var args = {
-      formId: $('#inputFormId_' + instanceId, this.DOM).val(),
-      formDataset: $('#inputFormDs_' + instanceId, this.DOM).val(),
-      removesTittle: $('#checkRemoveTitle_' + instanceId, this.DOM).is(
-        ':checked'
-      ),
+      formId: $('#inputFormId_' + instanceId).val(),
+      formDataset: $('#inputFormDs_' + instanceId).val(),
+      removesTittle: $('#checkRemoveTitle_' + instanceId).is(':checked'),
     };
 
     var result = WCMSpaceAPI.PageService.UPDATEPREFERENCES(
@@ -123,6 +122,27 @@ var custom_params_manager = SuperWidget.extend({
   },
 
   /**
+   * @method loadSavedSettings
+   * @description loads the current saved settings for the widget instance
+   * @since 2022/05/18
+   */
+  loadSavedSettings: function () {
+    var instanceId = this.instanceId;
+
+    if (this.formId != null) {
+      $('#inputFormId_' + instanceId).val(this.formId);
+    }
+
+    if (this.formDataset != null) {
+      $('#inputFormDs_' + instanceId).val(this.formDataset);
+    }
+
+    if (this.removesTittle == 'true') {
+      $('#checkRemoveTitle_' + instanceId).prop('checked', true);
+    }
+  },
+
+  /**
    * @method init
    * @description method fired when the widget is loaded.
    * @since 2022/05/15
@@ -134,6 +154,15 @@ var custom_params_manager = SuperWidget.extend({
     this.loaderInstance = FLUIGC.loading(
       '#custom_params_manager_' + this.instanceId
     );
+
+    // if the widget is in edit mode
+    if (this.isEditMode) {
+      this.loadSavedSettings();
+    } else {
+      if (this.removesTittle == 'true') {
+        $('.pageTitle').parent().remove();
+      }
+    }
   },
 
   // defines the widget function bindings
