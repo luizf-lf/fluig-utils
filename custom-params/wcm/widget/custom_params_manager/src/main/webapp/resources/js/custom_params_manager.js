@@ -21,6 +21,18 @@ var custom_params_manager = SuperWidget.extend({
       tableHeadId: 'Identificador',
       tableHeadVal: 'Valor',
       tableHeadDesc: 'Descrição',
+      includeFormParamId: 'Identificador:',
+      includeFormParamIdPlaceholder: 'Informe o identificador do parâmetro.',
+      includeFormParamValue: 'Valor:',
+      includeFormParamValuePlaceholder: 'Informe o valor do parâmetro.',
+      includeFormParamValueIsSensitive: 'Valor sensível?',
+      includeFormParamDescription: 'Descrição:',
+      includeFormParamDescriptionPlaceholder: 'Informe a descrição do parâmetro (Opcional).',
+      includeFormModalTitle: 'Incluir um novo parâmetro',
+      saveButton: 'Salvar',
+      saveSuccess: 'Registro salvo com sucesso',
+      saveError: 'Erro ao salvar: ',
+      closeButton: 'Fechar',
     },
     es: {
       instanceErrorTitle: 'Error al crear la widget.',
@@ -31,10 +43,22 @@ var custom_params_manager = SuperWidget.extend({
       noParams: 'Ningún parámetro registrado',
       noParamsFound: 'Ningún parámetro encontrado',
       noParamsAlt: 'Ningún parámetro',
-      nonexistentDataset: 'El conjunto de datos informado no existe. Compruebe en la configuración del widget si el conjunto de datos informado está vinculado al formulario vinculado.',
+      nonexistentDataset: 'El dataset informado no existe. Compruebe en la configuración del widget si el conjunto de datos informado está vinculado al formulario vinculado.',
       tableHeadId: 'Identificador',
       tableHeadVal: 'Valor',
       tableHeadDesc: 'Descripción',
+      includeFormParamId: 'Identificador:',
+      includeFormParamIdPlaceholder: 'Informa lo identificador del parámetro.',
+      includeFormParamValue: 'Valor:',
+      includeFormParamValuePlaceholder: 'Informa lo valor del parámetro.',
+      includeFormParamValueIsSensitive: '¿Valor sensible?',
+      includeFormParamDescription: 'Descripción:',
+      includeFormParamDescriptionPlaceholder: 'Ingrese la descripción del parámetro (Opcional).',
+      includeFormModalTitle: 'Incluir un nuevo parámetro',
+      saveButton: 'Guardar',
+      saveSuccess: 'Registro guardado con éxito',
+      saveError: 'Error al guardar: ',
+      closeButton: 'Cerrar',
     },
     en_US: {
       instanceErrorTitle: 'Error while instancing the widget.',
@@ -49,6 +73,18 @@ var custom_params_manager = SuperWidget.extend({
       tableHeadId: 'Identifier',
       tableHeadVal: 'Value',
       tableHeadDesc: 'Description',
+      includeFormParamId: 'Identifier:',
+      includeFormParamIdPlaceholder: 'Type in the parameter identifier',
+      includeFormParamValue: 'Value:',
+      includeFormParamValuePlaceholder: 'Type in the parameter value',
+      includeFormParamValueIsSensitive: 'Sensitive value?',
+      includeFormParamDescription: 'Description:',
+      includeFormParamDescriptionPlaceholder: 'Type in the parameter description (optional)',
+      includeFormModalTitle: 'Include a new param',
+      saveButton: 'Save',
+      saveSuccess: 'Record saved successfully',
+      saveError: 'Error while saving: ',
+      closeButton: 'Close',
     },
   },
 
@@ -184,11 +220,11 @@ var custom_params_manager = SuperWidget.extend({
       <table class="table table-hover">
         <thead>
           <tr>
-            <th><input type="checkbox" data-check-all id="checkToggleAll_' + instanceId + '" data-toggle-action-buttons /></th>
+            <th><input type="checkbox" data-check-all id="checkToggleAll_${instanceId}" data-toggle-action-buttons /></th>
             <th>Id</th>
-            <th>Identificador</th>
-            <th>Valor</th>
-            <th>Descrição</th>
+            <th>${this.getTranslation('tableHeadId')}</th>
+            <th>${this.getTranslation('tableHeadVal')}</th>
+            <th>${this.getTranslation('tableHeadDesc')}</th>
           </tr>
         </thead>
         <tbody>
@@ -330,12 +366,195 @@ var custom_params_manager = SuperWidget.extend({
     }
   },
 
+  /**
+   * @method showIncludeDialog
+   * @description method that shows the 
+   * @since 2022/05/26
+   */
+  showIncludeDialog: function () {
+    const instanceId = this.instanceId;
+    const modalFormHtml = `
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="paramID_${instanceId}">${this.getTranslation('includeFormParamId')}</label>
+            <span class="required text-danger"><strong>*</strong></span>
+            <input
+              type="text"
+              class="form-control"
+              name="paramID_${instanceId}"
+              id="paramID_${instanceId}"
+              placeholder="${this.getTranslation('includeFormParamIdPlaceholder')}"
+            />
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="paramValue_${instanceId}">${this.getTranslation('includeFormParamValue')}</label>
+            <span class="required text-danger"><strong>*</strong></span>
+            <input
+              type="password"
+              class="form-control"
+              name="paramValue_${instanceId}"
+              id="paramValue_${instanceId}"
+              placeholder="${this.getTranslation('includeFormParamValuePlaceholder')}"
+            />
+          </div>
+        </div>
+        <div class="fs-display-none">
+          <label for="paramValueIsSensitive_${instanceId}">
+            <input
+              type="checkbox"
+              name="paramValueIsSensitive_${instanceId}"
+              id="paramValueIsSensitive_${instanceId}"
+              checked
+            />                    
+            ${this.getTranslation('includeFormParamValueIsSensitive')}
+          </label>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="paramDescription_${instanceId}">${this.getTranslation('includeFormParamDescription')}</label>
+            <textarea
+              type="text"
+              class="form-control"
+              name="paramDescription_${instanceId}"
+              id="paramDescription_${instanceId}"
+              placeholder="${this.getTranslation('includeFormParamDescriptionPlaceholder')}"
+              rows="6"
+            ></textarea>
+          </div>
+        </div>
+      </div>`
+
+
+    FLUIGC.modal(
+      {
+        title: this.getTranslation('includeFormModalTitle'),
+        content: modalFormHtml,
+        id: 'include-param-modal',
+        size: 'large',
+        actions: [
+          {
+            label: this.getTranslation('saveButton'),
+            bind: 'data-save-new-param',
+          },
+          {
+            label: this.getTranslation('closeButton'),
+            autoClose: true,
+          },
+        ],
+      },
+      function (err, data) {
+        if (err) {
+          console.log(err);
+        }
+      }
+    );
+
+    const pass = FLUIGC.password('#paramValue_' + this.instanceId);
+    pass.on('fsshow.password', () => {
+      $('#paramValueIsSensitive_' + this.instanceId).prop('checked', !$('#paramValueIsSensitive_' + this.instanceId).is(':checked'));
+    });
+
+    pass.on('fshide.password', () => {
+      $('#paramValueIsSensitive_' + this.instanceId).prop('checked', !$('#paramValueIsSensitive_' + this.instanceId).is(':checked'));
+    });
+  },
+
+  /**
+   * @method saveNewParam
+   * @description method that saves a new parameter from the modal form
+   * @since 2022/05/26
+   */
+  saveNewParam: async function() {
+    const modalLoader = FLUIGC.loading('#include-param-modal');
+    const instanceId = this.instanceId;
+    const requestData = {
+      "values": [
+        {
+          "fieldId": "paramID",
+          "value": $('#paramID_' + instanceId).val()
+        },
+        {
+          "fieldId": "paramValue",
+          "value": $('#paramValue_' + instanceId).val()
+        },
+        {
+          "fieldId": "paramValueIsSensitive",
+          "value": $('#paramValueIsSensitive_' + instanceId).is(':checked') ? 'on' : null
+        },
+        {
+          "fieldId": "paramDescription",
+          "value": $('#paramDescription_' + instanceId).val()
+        },
+      ]
+    }
+
+    modalLoader.show();
+
+    var response = await fetch(
+      WCMAPI.serverURL +
+        '/ecm-forms/api/v2/cardindex/' +
+        this.formId +
+        '/cards',
+      {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
+      }
+    );
+
+    if (response.status != 200) {
+      if (response.status == 400) {
+        var stream = new Response(response.body);
+        var responseJson = await stream.json();
+
+        FLUIGC.toast({
+          title: this.getTranslation('saveError'),
+          message: responseJson.message,
+          type: 'warning',
+        });
+
+        modalLoader.hide();
+        return;
+      }
+
+      FLUIGC.toast({
+        title: this.getTranslation('saveError'),
+        message: response.statusText,
+        type: 'danger',
+      });
+
+      modalLoader.hide();
+    } else {
+      FLUIGC.toast({
+        title: '',
+        message: this.getTranslation('saveSuccess'),
+        type: 'success',
+      });
+
+      modalLoader.hide();
+      $("[data-dismiss='modal']").click();
+      this.initDataTable();
+    }
+  },
+
   // defines the widget function bindings
   bindings: {
     local: {
       'select-document': ['click_selectDocument'],
       'save-settings': ['click_saveSettings'],
+      'add-record': ['click_showIncludeDialog'],
     },
-    global: {},
+    global: {
+      'save-new-param': ['click_saveNewParam'],
+    },
   },
 });
