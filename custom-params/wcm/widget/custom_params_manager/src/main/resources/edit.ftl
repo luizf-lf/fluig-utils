@@ -5,8 +5,8 @@
 >
   <div class="row">
     <div class="col-md-12">
-      <h2>Configurador de Parâmetros</h2>
-      <h3>Configurações do Formulário</h3> 
+      <h2>${i18n.getTranslation("application.header")}</h2>
+      <h3>${i18n.getTranslation("edit.formSettings.header")}</h3> 
     </div>
   </div>
 
@@ -14,32 +14,32 @@
     <div class="col-md-6">
       <div class="form-group">
         <label for="inputFormId_${instanceId}">
-          Código do Formulário
+          ${i18n.getTranslation("edit.formSettings.formCode")}
         </label>
         <input
           type="text"
           class="form-control"
           name="inputFormId_${instanceId}"
           id="inputFormId_${instanceId}"
-          placeholder=""
+          placeholder="${i18n.getTranslation('edit.formSettings.formCode.placeholder')}"
           readonly
         />
         <button type="button" class="btn btn-primary fs-md-margin-top" data-select-document>
-          Buscar Formulário No ECM
+          ${i18n.getTranslation("edit.formSettings.button")}
         </button>
       </div>
     </div>
     <div class="col-md-6">
       <div class="form-group">
         <label for="inputFormDs_${instanceId}">
-          Dataset do Formulário
+          ${i18n.getTranslation("edit.formSettings.dsForm")}
         </label>
         <input
           type="text"
           class="form-control"
           name="inputFormDs_${instanceId}"
           id="inputFormDs_${instanceId}"
-          placeholder=""
+          placeholder="${i18n.getTranslation('edit.formSettings.dsForm.placeholder')}"
           readonly
         />
       </div>
@@ -48,7 +48,7 @@
 
   <div class="row">
     <div class="col-md-12">
-      <h3>Configurações Da Widget</h3> 
+      <h3>${i18n.getTranslation("edit.widgetSettings.header")}</h3> 
     </div>
   </div>
 
@@ -60,10 +60,10 @@
             type="checkbox" 
             id="checkRemoveTitle_${instanceId}" 
             name="checkRemoveTitle_${instanceId}" 
-          /> Remover título da página?
+          /> ${i18n.getTranslation("edit.widgetSettings.removeTittle")}
         </label>
         <br />
-        <small>Marque esta opção caso deseje remover o título da página em um layout padrão do Fluig.</small>
+        <small>${i18n.getTranslation("edit.widgetSettings.removeTittle.helper")}</small>
       </div>
     </div>
   </div>
@@ -71,7 +71,7 @@
   <div class="row">
     <div class="col-md-12">
       <button type="button" class="btn btn-primary" data-save-settings>
-        Salvar
+        ${i18n.getTranslation("edit.save.button")}
       </button>
     </div>
   </div>
