@@ -21,18 +21,22 @@ var custom_params_manager = SuperWidget.extend({
       tableHeadId: 'Identificador',
       tableHeadVal: 'Valor',
       tableHeadDesc: 'Descrição',
-      includeFormParamId: 'Identificador:',
-      includeFormParamIdPlaceholder: 'Informe o identificador do parâmetro.',
-      includeFormParamValue: 'Valor:',
-      includeFormParamValuePlaceholder: 'Informe o valor do parâmetro.',
-      includeFormParamValueIsSensitive: 'Valor sensível?',
-      includeFormParamDescription: 'Descrição:',
-      includeFormParamDescriptionPlaceholder: 'Informe a descrição do parâmetro (Opcional).',
+      formParamId: 'Identificador:',
+      formParamIdPlaceholder: 'Informe o identificador do parâmetro.',
+      formParamValue: 'Valor:',
+      formParamValuePlaceholder: 'Informe o valor do parâmetro.',
+      formParamValueIsSensitive: 'Valor sensível?',
+      formParamDescription: 'Descrição:',
+      formParamDescriptionPlaceholder: 'Informe a descrição do parâmetro (Opcional).',
       includeFormModalTitle: 'Incluir um novo parâmetro',
+      editFormModalTitle: 'Editar um parâmetro',
       saveButton: 'Salvar',
       saveSuccess: 'Registro salvo com sucesso',
       saveError: 'Erro ao salvar: ',
+      editButton: 'Editar',
       closeButton: 'Fechar',
+      warningTitle: 'Aviso: ',
+      warningEditOnce: 'Você só pode editar apenas um registro por vez.',
     },
     es: {
       instanceErrorTitle: 'Error al crear la widget.',
@@ -47,18 +51,22 @@ var custom_params_manager = SuperWidget.extend({
       tableHeadId: 'Identificador',
       tableHeadVal: 'Valor',
       tableHeadDesc: 'Descripción',
-      includeFormParamId: 'Identificador:',
-      includeFormParamIdPlaceholder: 'Informa lo identificador del parámetro.',
-      includeFormParamValue: 'Valor:',
-      includeFormParamValuePlaceholder: 'Informa lo valor del parámetro.',
-      includeFormParamValueIsSensitive: '¿Valor sensible?',
-      includeFormParamDescription: 'Descripción:',
-      includeFormParamDescriptionPlaceholder: 'Ingrese la descripción del parámetro (Opcional).',
+      formParamId: 'Identificador:',
+      formParamIdPlaceholder: 'Informa lo identificador del parámetro.',
+      formParamValue: 'Valor:',
+      formParamValuePlaceholder: 'Informa lo valor del parámetro.',
+      formParamValueIsSensitive: '¿Valor sensible?',
+      formParamDescription: 'Descripción:',
+      formParamDescriptionPlaceholder: 'Ingrese la descripción del parámetro (Opcional).',
       includeFormModalTitle: 'Incluir un nuevo parámetro',
+      editFormModalTitle: 'Editar un parámetro',
       saveButton: 'Guardar',
       saveSuccess: 'Registro guardado con éxito',
       saveError: 'Error al guardar: ',
+      editButton: 'Editar',
       closeButton: 'Cerrar',
+      warningTitle: 'Advertencia: ',
+      warningEditOnce: 'Solo puede editar un registro a la vez.',
     },
     en_US: {
       instanceErrorTitle: 'Error while instancing the widget.',
@@ -73,18 +81,22 @@ var custom_params_manager = SuperWidget.extend({
       tableHeadId: 'Identifier',
       tableHeadVal: 'Value',
       tableHeadDesc: 'Description',
-      includeFormParamId: 'Identifier:',
-      includeFormParamIdPlaceholder: 'Type in the parameter identifier',
-      includeFormParamValue: 'Value:',
-      includeFormParamValuePlaceholder: 'Type in the parameter value',
-      includeFormParamValueIsSensitive: 'Sensitive value?',
-      includeFormParamDescription: 'Description:',
-      includeFormParamDescriptionPlaceholder: 'Type in the parameter description (optional)',
+      formParamId: 'Identifier:',
+      formParamIdPlaceholder: 'Type in the parameter identifier',
+      formParamValue: 'Value:',
+      formParamValuePlaceholder: 'Type in the parameter value',
+      formParamValueIsSensitive: 'Sensitive value?',
+      formParamDescription: 'Description:',
+      formParamDescriptionPlaceholder: 'Type in the parameter description (optional)',
       includeFormModalTitle: 'Include a new param',
+      editFormModalTitle: 'Edit param',
       saveButton: 'Save',
       saveSuccess: 'Record saved successfully',
       saveError: 'Error while saving: ',
+      editButton: 'Edit',
       closeButton: 'Close',
+      warningTitle: 'Warning: ',
+      warningEditOnce: 'You can only edit one record at a time.',
     },
   },
 
@@ -377,14 +389,14 @@ var custom_params_manager = SuperWidget.extend({
       <div class="row">
         <div class="col-md-12">
           <div class="form-group">
-            <label for="paramID_${instanceId}">${this.getTranslation('includeFormParamId')}</label>
+            <label for="paramID_${instanceId}">${this.getTranslation('formParamId')}</label>
             <span class="required text-danger"><strong>*</strong></span>
             <input
               type="text"
               class="form-control"
               name="paramID_${instanceId}"
               id="paramID_${instanceId}"
-              placeholder="${this.getTranslation('includeFormParamIdPlaceholder')}"
+              placeholder="${this.getTranslation('formParamIdPlaceholder')}"
             />
           </div>
         </div>
@@ -392,14 +404,14 @@ var custom_params_manager = SuperWidget.extend({
       <div class="row">
         <div class="col-md-12">
           <div class="form-group">
-            <label for="paramValue_${instanceId}">${this.getTranslation('includeFormParamValue')}</label>
+            <label for="paramValue_${instanceId}">${this.getTranslation('formParamValue')}</label>
             <span class="required text-danger"><strong>*</strong></span>
             <input
               type="password"
               class="form-control"
               name="paramValue_${instanceId}"
               id="paramValue_${instanceId}"
-              placeholder="${this.getTranslation('includeFormParamValuePlaceholder')}"
+              placeholder="${this.getTranslation('formParamValuePlaceholder')}"
             />
           </div>
         </div>
@@ -411,20 +423,20 @@ var custom_params_manager = SuperWidget.extend({
               id="paramValueIsSensitive_${instanceId}"
               checked
             />                    
-            ${this.getTranslation('includeFormParamValueIsSensitive')}
+            ${this.getTranslation('formParamValueIsSensitive')}
           </label>
         </div>
       </div>
       <div class="row">
         <div class="col-md-12">
           <div class="form-group">
-            <label for="paramDescription_${instanceId}">${this.getTranslation('includeFormParamDescription')}</label>
+            <label for="paramDescription_${instanceId}">${this.getTranslation('formParamDescription')}</label>
             <textarea
               type="text"
               class="form-control"
               name="paramDescription_${instanceId}"
               id="paramDescription_${instanceId}"
-              placeholder="${this.getTranslation('includeFormParamDescriptionPlaceholder')}"
+              placeholder="${this.getTranslation('formParamDescriptionPlaceholder')}"
               rows="6"
             ></textarea>
           </div>
@@ -571,17 +583,239 @@ var custom_params_manager = SuperWidget.extend({
     $('[data-delete-record]').prop('disabled', !hasItemChecked);
   },
 
+  
+  /**
+   * @method getCheckedItems
+   * @description method that recovers the selected items
+   * @returns {number[]} an array of ids from the selected items
+   * @since 2022/05/27
+   */
+  getCheckedItems: function() {
+    const selected = $('.datatable-check-option:checked');
+    const ids = [];
+
+    for (let i = 0; i < selected.length; i++) {
+      ids.push($(selected[i]).prop('id'));
+    }
+
+    return ids;
+  },
+
+  /**
+   * @method showEditDialog
+   * @description method that shows the record edit dialog
+   * @since 2022/05/27
+   */
+  showEditDialog: function() {
+    let modalFormHtml = null;
+    const instanceId = this.instanceId;
+    const ids = this.getCheckedItems();
+
+    if (ids.length > 1) {
+      FLUIGC.toast({
+        title: this.getTranslation('warningTittle'),
+        message: this.getTranslation('warningEditOnce'),
+        type: 'warning',
+      });
+      return;
+    }
+
+    const selectedValue = this.datasetValues.find(item => item.documentid == ids[0]);
+
+    modalFormHtml = `
+      <div id="paramEditFormContainer" data-document-edit-id="${ids[0]}">
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="paramID_${instanceId}">${this.getTranslation("formParamId")}</label>
+              <span class="required text-danger"><strong>*</strong></span>
+              <input
+                type="text"
+                class="form-control"
+                name="paramID_${instanceId}"
+                id="paramID_${instanceId}"
+                placeholder="${this.getTranslation("formParamIdPlaceholder")}"
+                value="${selectedValue.paramID}"
+              />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="paramValue_${instanceId}">${this.getTranslation("formParamValue")}</label>
+              <span class="required text-danger"><strong>*</strong></span>
+              <input
+                type="password"
+                class="form-control"
+                name="paramValue_${instanceId}"
+                id="paramValue_${instanceId}"
+                placeholder="${this.getTranslation("formParamValuePlaceholder")}"
+                value="${selectedValue.paramValue}"
+              />
+            </div>
+            <div class="fs-display-none">
+              <label for="paramValueIsSensitive_${instanceId}">
+                <input
+                  type="checkbox"
+                  name="paramValueIsSensitive_${instanceId}"
+                  id="paramValueIsSensitive_${instanceId}"
+                  ${selectedValue.paramValueIsSensitive == 'on' ? 'checked' : ''}
+                />                    
+                ${this.getTranslation("formParamValueIsSensitive")}
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-md-12">
+            <div class="form-group">
+              <label for="paramDescription_${instanceId}">${this.getTranslation("formParamDescription")}</label>
+              <textarea
+                type="text"
+                class="form-control"
+                name="paramDescription_${instanceId}"
+                id="paramDescription_${instanceId}"
+                placeholder="${this.getTranslation("formParamDescriptionPlaceholder")}"
+                rows="6"
+              >${selectedValue.paramDescription.trim()}</textarea>
+            </div>
+          </div>
+        </div>
+      </div>`;
+    
+
+    FLUIGC.modal(
+      {
+        title: this.getTranslation("editFormModalTitle"),
+        content: modalFormHtml,
+        id: 'edit-param-modal',
+        size: 'large',
+        actions: [
+          {
+            label: this.getTranslation("editButton"),
+            bind: 'data-edit-param',
+          },
+          {
+            label: this.getTranslation("closeButton"),
+            autoClose: true,
+          },
+        ],
+      },
+      function (err, data) {
+        if (err) {
+          console.log(err);
+        }
+      }
+    );
+
+    var pass = FLUIGC.password('#paramValue_' + this.instanceId);
+    selectedValue.paramValueIsSensitive != 'on' && pass.show();
+    pass.on('fsshow.password', () => {
+      $('#paramValueIsSensitive_' + this.instanceId).prop('checked', !$('#paramValueIsSensitive_' + this.instanceId).is(':checked'));
+    });
+
+    pass.on('fshide.password', () => {
+      $('#paramValueIsSensitive_' + this.instanceId).prop('checked', !$('#paramValueIsSensitive_' + this.instanceId).is(':checked'));
+    });
+  },
+  /**
+   * @method editParams
+   * @description method that executes the record edit POST request
+   * @since 2022/05/11
+   */  
+  editParams: async function() {
+    const ids = this.getCheckedItems();
+    const modalLoader = FLUIGC.loading('#edit-param-modal');
+    const instanceId = this.instanceId;
+    let requestData = null;
+
+    if (ids.length > 1) {
+      FLUIGC.toast({
+        title: this.getTranslation("warningTitle"),
+        message: this.getTranslation("warningEditOnce"),
+        type: 'warning',
+      });
+      return;
+    }
+
+    modalLoader.show();
+    
+    requestData = {
+      "values": [
+        {
+          "fieldId": "paramID",
+          "value": $('#paramID_' + instanceId).val()
+        },
+        {
+          "fieldId": "paramValue",
+          "value": $('#paramValue_' + instanceId).val()
+        },
+        {
+          "fieldId": "paramValueIsSensitive",
+          "value": $('#paramValueIsSensitive_' + instanceId).is(':checked') ? 'on' : null
+        },
+        {
+          "fieldId": "paramDescription",
+          "value": $('#paramDescription_' + instanceId).val()
+        },
+      ]
+    };
+
+    const response = await fetch(
+      WCMAPI.serverURL +
+        '/ecm-forms/api/v2/cardindex/' +
+        this.formId +
+        '/cards/' + ids[0],
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(requestData),
+      }
+    );
+
+
+    if (response.status != 200) {
+      const stream = new Response(response.body);
+      const responseJson = await stream.json();
+
+      FLUIGC.toast({
+        title: this.getTranslation("saveError"),
+        message: responseJson.message,
+        type: 'warning',
+      });
+
+      modalLoader.hide();
+      return;
+    } else {
+      FLUIGC.toast({
+        title: '',
+        message: this.getTranslation("saveSuccess"),
+        type: 'success',
+      });
+
+      modalLoader.hide();
+      $("[data-dismiss='modal']").click();
+      this.initDataTable();
+    }
+  },
+
+
   // defines the widget function bindings
   bindings: {
     local: {
       'select-document': ['click_selectDocument'],
       'save-settings': ['click_saveSettings'],
       'add-record': ['click_showIncludeDialog'],
+      'edit-record': ['click_showEditDialog'],
       'check-all': ['click_toggleCheckAll'],
       'toggle-action-buttons': ['click_toggleActionButtons'],
     },
     global: {
       'save-new-param': ['click_saveNewParam'],
+      'edit-param': ['click_editParams'],
     },
   },
 });
