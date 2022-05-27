@@ -17,6 +17,7 @@ var custom_params_manager = SuperWidget.extend({
       noParams: 'Nenhum parâmetro cadastrado',
       noParamsFound: 'Nenhum parâmetro encontrado',
       noParamsAlt: 'Nenhum registro',
+      noParamsSelected: 'Nenhum registro selecionado',
       nonexistentDataset: 'Dataset informado não existe. Verifique nas configurações da Widget se o dataset informado está vinculado ao formulário vinculado.',
       tableHeadId: 'Identificador',
       tableHeadVal: 'Valor',
@@ -35,8 +36,18 @@ var custom_params_manager = SuperWidget.extend({
       saveError: 'Erro ao salvar: ',
       editButton: 'Editar',
       closeButton: 'Fechar',
+      deleteButton: 'Excluir',
       warningTitle: 'Aviso: ',
       warningEditOnce: 'Você só pode editar apenas um registro por vez.',
+      deleteModalTitle: 'Excluir um ou mais parâmetros',
+      deleteModalConfirmation: 'Deseja realmente excluir os parâmetros abaixo?',
+      deleteModalMessage: 'Será possível restaurá-los posteriormente através da lixeira.',
+      deletionError: 'Erro ao excluir: ',
+      noParamSelected: 'Nenhum registro selecionado.',
+      singleRegisterDeletedMsg1: 'Registro ',
+      singleRegisterDeletedMsg2: ' excluído com sucesso.',
+      multipleRegistersDeleted: ' registros excluídos com sucesso.',
+      deleteSuccess: 'Sucesso: ',
     },
     es: {
       instanceErrorTitle: 'Error al crear la widget.',
@@ -47,6 +58,7 @@ var custom_params_manager = SuperWidget.extend({
       noParams: 'Ningún parámetro registrado',
       noParamsFound: 'Ningún parámetro encontrado',
       noParamsAlt: 'Ningún parámetro',
+      noParamsSelected: 'Ningún parámetro selecionado',
       nonexistentDataset: 'El dataset informado no existe. Compruebe en la configuración del widget si el conjunto de datos informado está vinculado al formulario vinculado.',
       tableHeadId: 'Identificador',
       tableHeadVal: 'Valor',
@@ -65,8 +77,18 @@ var custom_params_manager = SuperWidget.extend({
       saveError: 'Error al guardar: ',
       editButton: 'Editar',
       closeButton: 'Cerrar',
+      deleteButton: 'Eliminar',
       warningTitle: 'Advertencia: ',
       warningEditOnce: 'Solo puede editar un registro a la vez.',
+      deleteModalTitle: 'Eliminar uno o más parámetros',
+      deleteModalConfirmation: '¿Realmente desea eliminar los parámetros a continuación?',
+      deleteModalMessage: 'Será posible restaurarlos más tarde a través de la papelera.',
+      deletionError: 'Error al borrar:',
+      noParamSelected: 'No hay registros seleccionados.',
+      singleRegisterDeletedMsg1: 'Registro ',
+      singleRegisterDeletedMsg2: ' eliminado con éxito.',
+      multipleRegistersDeleted: ' registros eliminados con éxito.',
+      deleteSuccess: 'Éxito: ',
     },
     en_US: {
       instanceErrorTitle: 'Error while instancing the widget.',
@@ -77,6 +99,7 @@ var custom_params_manager = SuperWidget.extend({
       noParams: 'No parameters registered',
       noParamsFound: 'No parameters found',
       noParamsAlt: 'No records',
+      noParamsSelected: 'No parameter selected',
       nonexistentDataset: 'Dataset informed does not exist. Check in the Widget settings if the informed dataset is linked to the linked form.',
       tableHeadId: 'Identifier',
       tableHeadVal: 'Value',
@@ -95,8 +118,18 @@ var custom_params_manager = SuperWidget.extend({
       saveError: 'Error while saving: ',
       editButton: 'Edit',
       closeButton: 'Close',
+      deleteButton: 'Delete',
       warningTitle: 'Warning: ',
       warningEditOnce: 'You can only edit one record at a time.',
+      deleteModalTitle: 'Delete one or more parameters',
+      deleteModalConfirmation: 'Do you really wish to delete the following parameters?',
+      deleteModalMessage: 'You can recover them later trough the recycle bin.',
+      deletionError: 'Error while deleting: ',
+      noParamSelected: 'No record selected.',
+      singleRegisterDeletedMsg1: 'Record ',
+      singleRegisterDeletedMsg2: ' deleted successfully.',
+      multipleRegistersDeleted: ' registers deleted with success.',
+      deleteSuccess: 'Success: ',
     },
   },
 
@@ -721,7 +754,7 @@ var custom_params_manager = SuperWidget.extend({
   },
   /**
    * @method editParams
-   * @description method that executes the record edit POST request
+   * @description method that executes the record edit PUT request
    * @since 2022/05/11
    */  
   editParams: async function() {
@@ -802,6 +835,146 @@ var custom_params_manager = SuperWidget.extend({
     }
   },
 
+  /**
+   * @method showDeleteDialog
+   * @description method that shows the records deletion dialog
+   * @since 2022/05/27
+   */
+  showDeleteDialog: function() {
+    const ids = this.getCheckedItems();
+    let modalFormHtml = null;
+
+    if (ids.length == 0) {
+      FLUIGC.toast({
+        title: '',
+        message: this.getTranslation('noParamsSelected'),
+        type: 'warning',
+      });
+      return;
+    }
+
+    modalFormHtml = `
+      <div>
+        <p>${this.getTranslation('deleteModalConfirmation')}</p>
+        <ul>
+          ${ids.map((id)=> {
+            const foundValue = this.datasetValues.find(i => i.documentid == id);
+            let returnString = '';
+            if (typeof foundValue !== 'undefined') {
+              returnString = `
+                <b>
+                  ${foundValue.paramID}
+                </b>
+                  ${foundValue.paramDescription == '' ? '' : ' - ' + foundValue.paramDescription}
+              `
+            }
+            return `
+              <li>
+                ${returnString}
+              </li>
+            `
+            
+          }).join('\n')}
+        </ul>
+        <p>${this.getTranslation('deleteModalMessage')}</p>
+      </div>`;
+
+    FLUIGC.modal(
+      {
+        title: this.getTranslation('deleteModalTitle'),
+        content: modalFormHtml,
+        id: 'delete-param-modal',
+        size: 'large',
+        actions: [
+          {
+            label: this.getTranslation('deleteButton'),
+            bind: 'data-delete-params',
+            classType: 'btn-danger',
+          },
+          {
+            label: this.getTranslation('closeButton'),
+            autoClose: true,
+          },
+        ],
+      },
+      function (err, data) {
+        if (err) {
+          console.log(err);
+        }
+      }
+    );
+  },
+
+  /**
+   * @method deleteParams
+   * @description method that executes the record deletion DELETE request
+   * @since 2022/05/27
+   */  
+   deleteParams: async function() {
+    const ids = this.getCheckedItems();
+    const modalLoader = FLUIGC.loading('#delete-param-modal');
+    const processedElements = [];
+
+    if (ids.length == 0) {
+      FLUIGC.toast({
+        title: '',
+        message: this.getTranslation('noParamSelected'),
+        type: 'warning',
+      });
+      return;
+    }
+
+    modalLoader.show()
+
+    for (let i = 0; i < ids.length; i++) {
+      const element = ids[i];
+      const response = await fetch(
+        WCMAPI.serverURL +
+          '/ecm-forms/api/v2/cardindex/' +
+          this.formId +
+          '/cards/' + element,
+        {
+          method: 'DELETE',
+        }
+      );
+
+      // the successful response from the server should be 204 (Success, but no return)
+      if (response.status != 204) {
+        const stream = new Response(response.body);
+        const responseJson = await stream.json();
+
+        FLUIGC.toast({
+          title: this.getTranslation('deletionError'),
+          message: responseJson.message,
+          type: 'danger',
+        });
+
+        modalLoader.hide();
+        return;
+        
+      } else {
+        processedElements.push(element);
+      }
+    }
+
+    if (processedElements.length == 1) {
+      FLUIGC.toast({
+        title: '',
+        message: this.getTranslation('singleRegisterDeletedMsg1') + processedElements[0] + this.getTranslation('singleRegisterDeletedMsg2'),
+        type: 'success',
+      });
+    } else {
+      FLUIGC.toast({
+        title: this.getTranslation('deleteSuccess'),
+        message:  processedElements.length + this.getTranslation('multipleRegistersDeleted'),
+        type: 'success',
+      });
+    }
+
+    modalLoader.hide();
+    $("[data-dismiss='modal']").click();
+    this.initDataTable();
+  },
 
   // defines the widget function bindings
   bindings: {
@@ -810,12 +983,14 @@ var custom_params_manager = SuperWidget.extend({
       'save-settings': ['click_saveSettings'],
       'add-record': ['click_showIncludeDialog'],
       'edit-record': ['click_showEditDialog'],
+      'delete-record': ['click_showDeleteDialog'],
       'check-all': ['click_toggleCheckAll'],
       'toggle-action-buttons': ['click_toggleActionButtons'],
     },
     global: {
       'save-new-param': ['click_saveNewParam'],
       'edit-param': ['click_editParams'],
+      'delete-params': ['click_deleteParams'],
     },
   },
 });
