@@ -220,7 +220,7 @@ var custom_params_manager = SuperWidget.extend({
       <table class="table table-hover">
         <thead>
           <tr>
-            <th><input type="checkbox" data-check-all id="checkToggleAll_${instanceId}" data-toggle-action-buttons /></th>
+            <th><input type="checkbox" id="checkToggleAll_${instanceId}" data-check-all data-toggle-action-buttons /></th>
             <th>Id</th>
             <th>${this.getTranslation('tableHeadId')}</th>
             <th>${this.getTranslation('tableHeadVal')}</th>
@@ -546,12 +546,39 @@ var custom_params_manager = SuperWidget.extend({
     }
   },
 
+  /**
+   * @method toggleCheckAll
+   * @description method that toggles all the checkboxes on the table
+   * @since 2022/05/27
+   */
+  toggleCheckAll: function () {
+    if ($('#checkToggleAll_' + this.instanceId).is(':checked')) {
+      $('.datatable-check-option').prop('checked', true);
+    } else {
+      $('.datatable-check-option').prop('checked', false);
+    }
+  },
+
+  /**
+   * @method toggleActionButtons
+   * @description method that enables the action buttons if at least one item is checked
+   * @since 2022/05/27
+   */
+  toggleActionButtons: function () {
+    var hasItemChecked = $('.datatable-check-option').is(':checked');
+
+    $('[data-edit-record]').prop('disabled', !hasItemChecked);
+    $('[data-delete-record]').prop('disabled', !hasItemChecked);
+  },
+
   // defines the widget function bindings
   bindings: {
     local: {
       'select-document': ['click_selectDocument'],
       'save-settings': ['click_saveSettings'],
       'add-record': ['click_showIncludeDialog'],
+      'check-all': ['click_toggleCheckAll'],
+      'toggle-action-buttons': ['click_toggleActionButtons'],
     },
     global: {
       'save-new-param': ['click_saveNewParam'],
