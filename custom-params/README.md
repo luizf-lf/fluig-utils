@@ -6,6 +6,8 @@ Permite uma gestão de parâmetros customizados que são cadastrados através de
 
 Esta customização conta também com uma widget que permite a gestão facilitada destes parâmetros.
 
+> Homologado na versão 1.7.1.
+
 ## Implementação
 
 Para implementar esta customização em um ambiente Fluig, siga os passos a seguir:
