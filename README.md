@@ -11,6 +11,7 @@ Abaixo segue uma lista de projetos disponíveis neste repositório, e uma breve 
 Dentro da pasta de cada projeto contém um `readme` contendo informações detalhadas e instruções de deploy de cada customização.
 
 - ✅ **custom-params** - Permite gerir parâmetros customizados dentro da plataforma, que podem ser acessíveis através do consumo de datasets em demais customizações na plataforma.
+- 🚧 **query-runner** - Permite a execução de queries diretamente pela plataforma através de uma widget e dataset.
 - 📃 **deploy-companion** - Uma ferramenta que permite criar scripts para a automação de configurações referentes a deploy de projetos no Fluig, e executá-los posteriormente.
 - 📃 **reaction-timeline** - Uma timeline que permite o uso de reações configuráveis em publicações.
 
